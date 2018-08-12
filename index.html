@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JSON2XML</title>
+    <meta name="author" content="Sem Postma">
+    <meta name="description" content="Converts XML markup to JSON and back">
+    <meta name="keywords" content="json2xml, obj2xml, xml, obj, javascript, json, convert, utility, from">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#3c763d">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#3c763d">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" integrity="sha384-C0X5qw1DlkeV0RDunhmi4cUBUkPDTvUqzElcNWm1NI2T4k8tKMZ+wRPQOhZfSJ9N"
+        crossorigin="anonymous">
+
+    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-112439526-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-112439526-7');
+    </script>
+    <style>
+        textarea {
+            resize: vertical;
+        }
+
+        body {
+            position: relative;
+        }
+
+        * {
+            outline: none;
+        }
+
+        footer {
+            border-top: 40px solid #fff;
+            background: #ddd;
+            z-index: 1000;
+            position: relative;
+            padding: 100px 0;
+            font-size: 15px;
+        }
+
+        footer ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            vertical-align: middle;
+            margin-bottom: 0;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #469408;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #469408;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .option {
+            display: inline-block;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+        input[type="number"] {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .navbar-default .navbar-nav>li>a:hover,
+        .navbar-default .navbar-nav>li>a:focus {
+            color: #3a87ad;
+        }
+
+        .navbar-default .navbar-nav>.active>a,
+        .navbar-default .navbar-nav>.active>a:hover,
+        .navbar-default .navbar-nav>.active>a:focus {
+            color: #3a87ad;
+
+        }
+    </style>
+</head>
+
+<body data-spy="scroll" data-target="#navbar-scrollspy" data-offset="40">
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container" id="navbar-scrollspy">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                        aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="#top">TOP</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#json2xml">JSON2XML</a>
+                        </li>
+                        <li>
+                            <a href="#xml2json">XML2JSON</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="jumbotron text-center" id="top">
+            <div class="container">
+                <h1>XML to JSON</h1>
+                <p>
+                    <small class="muted">(and back)</small>
+                </p>
+                <p>
+                    A Simple to use JSON to XML and XML to JSON converter utility. You are free to use the code in your own codebase: <a href="https://gist.github.com/LesterGallagher/9bf7b79fc9c02c525e4ddffcfdc8bea6">obj2xml.js</a>
+                </p>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <section id="json2xml">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">JSON2XML</h3>
+                            </div>
+                            <div class="container-fluid" style="padding: 12px;">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="json-input">JSON:</label>
+                                            <textarea class="form-control" rows="25" id="json-input">{}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="xml-output">Output:</label>
+                                            <textarea readonly class="form-control" rows="25" id="xml-output"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col col-xs-12">
+                                        <button class="btn btn-success" id="json2xmlgo">Convert</button>
+                                        <div class="option">
+                                            declaration:
+                                            <label class="switch">
+                                                <input type="checkbox" onchange="declaration = this.checked">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="option">
+                                            generate doctype:
+                                            <label class="switch">
+                                                <input type="checkbox" onchange="generateDoctype = this.checked">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="option">
+                                            use attributes:
+                                            <label class="switch">
+                                                <input type="checkbox" checked onchange="useAttributes = this.checked">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="option">
+                                            indentation:
+                                            <input class="form-control inline-block" onchange="indentation = +this.value" type="number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-xs-12">
+                    <section id="xml2json">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">XML2JSON</h3>
+                            </div>
+                            <div class="container-fluid" style="padding: 12px;">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="xml-input">XML:</label>
+                                            <textarea class="form-control" rows="25" id="xml-input">&lt;root name="john doe"&gt;
+&lt;/root&gt;
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="json-output">Output:</label>
+                                            <textarea readonly class="form-control" rows="25" id="json-output"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col col-xs-12">
+                                        <button class="btn btn-success" id="xml2jsongo">Convert</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+    <footer>
+        <div class="container text-white">
+            <div class="row">
+                <div class="col-sm-4 col-xs-12">
+                    <p>
+                    </p>
+                    <h2>Project :</h2>
+                    <p></p>
+                    <p>Animated
+                        <a class="text-info" target="_blank" href="https://cssicon.space/#/">Css Icons</a> by
+                        <a class="text-info" target="_blank" href="https://twitter.com/DesignJokes">Wenting Zhang</a>
+                    </p>
+                    <p>
+                        Ov Fiets
+                        <a class="text-info" target="_blank" href="https://play.google.com/store/apps/details?id=com.EchoSierraStudio.Ov_Fiets_App">App</a>
+                        /
+                        <a class="text-info" target="_blank" href="https://esstudio.site/ov-fiets-app/">Website</a>
+                    </p>
+                    <p>
+                        Simple Function Plotter
+                        <a class="text-info" target="_blank" href="https://play.google.com/store/apps/details?id=com.EchoSierraStudio.Simple_Function_Plotter">App</a>
+                        /
+                        <a class="text-info" target="_blank" href="https://lestergallagher.github.io/SimpleFunctionPlotter">Website</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://matrix-editor.esstudio.site/">Matrix Editor</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://ksp-part-catalog.space">KSP Part catalog</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://json-gui.site">JSON Gui</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://bunkersem.github.io/mouse-mania/">Mouse mania</a>
+                    </p>
+                    <p>
+                        <a class="text-info" href="https://protected-url.herokuapp.com/" target="_blank">Protected url</a>
+                    </p>
+                    <p>
+                        <a class="text-info" href="https://html2js.esstudio.site/" target="_blank">HTML2JS</a>
+                    </p>
+                    <p>
+                        <a class="text-info" href="https://esstudio.site/json2csv/" target="_blank">JSON2CSV</a>
+                    </p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <p>
+                    </p>
+                    <h2>Other :</h2>
+                    <p></p>
+                    <p>
+                        <a class="text-info" href="https://esstudio.site/2018/06/07/obj2xml-dot-js.html" target="_blank">Blog post about this website</a>
+                    </p>
+                    <p>
+                        <a class="text-info" href="https://gist.github.com/LesterGallagher/a5197d8c1c6fba1349f074d2f4ca2e31" target="_blank">obj2xml.js Gist</a>
+                    </p>
+                    <p>
+                        <a class="text-info" href="https://github.com/LesterGallagher/json2xml" target="_blank">Github</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://www.youtube.com/user/9Wereld/videos">Youtube</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://bunkersem.github.io/portfolio/">My Portfolio</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://play.google.com/store/apps/developer?id=EchoSierraStudio">Apps</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://sketchfab.com/Afirus">Sketchfab</a>
+                    </p>
+                    <p>
+                        <a class="text-info" target="_blank" href="https://www.sololearn.com/Profile/1157573">SoloLearn</a>
+                    </p>
+                    <p>
+                        <a class="text-info" href="https://esstudio.site" target="_blank">All Projects</a>
+                    </p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <p>
+                    </p>
+                    <h2>Social :
+                    </h2>
+                    <h2>
+                        <p></p>
+                        <div>
+                            <ul class="social-media-list">
+                                <li>
+                                    <a class="text-info" href="https://github.com/bunkersem">
+                                        <span class="username">bunkersem</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="text-info" href="https://youtube.com/9Wereld">
+                                        <span class="username">9Wereld</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="smoothscroll.js"></script>
+    <script src="obj2xml.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
